@@ -1,7 +1,12 @@
 (function() {
   var globalindex = 0;
 
-  var entries = [];
+    var demands = [];
+    var demandDiffs = [];
+    var offers = [];
+    var offerDiffs = [];
+    var midpoints = [];
+
 
   function parseFractionalValue(value) {
     var valueArray = String(value).split("/");
@@ -49,7 +54,6 @@
   $("#pointYValues").keyup(detectEndterKey);
 
   function demandOfferChangeEvent(e) {
-    console.log("demandOfferChangeEvent");
     calculateMidPoint($(e.currentTarget).attr("indexValue"))
   }
 
@@ -62,7 +66,6 @@
   }
 
   function calculateMidPoint(_indexValue) {
-    console.log("calculateMidPoint", _indexValue);
     if (typeof _indexValue === "undefined") {
       var target = $("#pointValues"),
         indexValue = globalindex,
@@ -89,11 +92,21 @@
     if ($.isNumeric(valueX) && $.isNumeric(valueY)) {
       demand.val(valueX);
       offer.val(valueY);
+
+        // add values to array for email
+        demands.push(valueX);
+        offers.push(valueY);
+        midpoints.push(((parseFloat(valueX) + parseFloat(valueY)) / 2));
+
       midpoint.html(((parseFloat(valueX) + parseFloat(valueY)) / 2));
 
       if (indexValue > 0) {
-        $("#pleft" + (indexValue - 1)).html(calculateDifferntials($("#demand" + (indexValue)).val(), $("#demand" + (indexValue - 1)).val()) + "%");
-        $("#pright" + (indexValue - 1)).html(calculateDifferntials($("#offer" + (indexValue)).val(), $("#offer" + (indexValue - 1)).val()) + "%");
+          var demandDiff = calculateDifferntials($("#demand" + (indexValue)).val(), $("#demand" + (indexValue - 1)).val());
+          var offerDiff = calculateDifferntials($("#offer" + (indexValue)).val(), $("#offer" + (indexValue - 1)).val());
+          demandDiffs.push(demandDiff);
+          offerDiffs.push(offerDiff);
+        $("#pleft" + (indexValue - 1)).html(demandDiff + "%");
+        $("#pright" + (indexValue - 1)).html(offerDiff + "%");
 
         $("#pleft" + indexValue).html(calculateDifferntials($("#demand" + (indexValue + 1)).val(), $("#demand" + indexValue).val()));
         $("#pright" + indexValue).html(calculateDifferntials($("#offer" + (indexValue + 1)).val(), $("#offer" + indexValue).val()));
@@ -101,6 +114,10 @@
 
       $("#pointYValues").val("");
       $("#pointXValues").val("").focus();
+    }
+      else {
+        demandDiffs.push(0.00);
+        offerDiffs.push(0.00);
     }
 
   }
@@ -112,19 +129,16 @@
     oldValue = checkIntValue(oldValue);
 
     if (newValue > oldValue) {
-      console.log("if condition", newValue, oldValue);
       difference = newValue - oldValue;
       if (newValue < 0 && oldValue < 0)
         flag = 1
       else if (newValue < 0)
         flag = -1;
     } else {
-      console.log("else condition", newValue, oldValue);
       difference = oldValue - newValue;
 
       flag = -1
     }
-    console.log("flag", flag);
     if (oldValue < 0)
       oldValue *= -1;
     return parseFloat(checkIntValue(difference / oldValue) * 100 * flag).toFixed(2);
@@ -151,7 +165,6 @@
   });
 
   $('.btnSendEmail').click(function(event) {
-    console.log("button clicked");
     // var email = '';
     // var subject = ''History of Demands and Offers'';
     // // var emailBody = '<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8" /></head><body>'+$("#midPointRows").html()+'</body></html>';
@@ -163,19 +176,26 @@
       onrendered: function(canvas) {
         // document.body.appendChild(canvas);
 
+          // workaround bug causing offset for differentials
+          demandDiffs.splice(0, 0, 0.00);
+          offerDiffs.splice(0, 0, 0.00);
 
         var img = new Image();
         img.src = canvas.toDataURL();
         // document.body.appendChild(img);
 
-        // console.log("img", $(img));
-
         var email = '';
         var subject = 'History of Demands and Offers';
         // var emailBody = '<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8" /></head><body><img src="'+img.src+'"></img></body></html>';
-        console.log("canvas", $(canvas));
-        // var emailBody = img.src;
-        emailBody = 'testing123';
+        var emailBody = '';
+          for (var i = 0; i < demands.length; i++) {
+              var entryNum = i + 1;
+              emailBody += 'Entry ' + entryNum + '\n';
+              emailBody += 'Demand: ' + demands[i] + ' (' + demandDiffs[i] + '% differential)';
+              emailBody += ', Offer: ' + offers[i] + ' (' + offerDiffs[i] + '% differeential)';
+              emailBody += ', Midpoint: ' + midpoints[i] + '\n\n';
+          }
+          emailBody = encodeURIComponent(emailBody);
         window.location = 'mailto:' + email + '?subject=' + subject + '&body='+emailBody;
 
 
