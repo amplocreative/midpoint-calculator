@@ -192,7 +192,7 @@
               var entryNum = i + 1;
               emailBody += 'Entry ' + entryNum + '\n';
               emailBody += 'Demand: ' + demands[i] + ' (' + demandDiffs[i] + '% differential)';
-              emailBody += ', Offer: ' + offers[i] + ' (' + offerDiffs[i] + '% differeential)';
+              emailBody += ', Offer: ' + offers[i] + ' (' + offerDiffs[i] + '% differential)';
               emailBody += ', Midpoint: ' + midpoints[i] + '\n\n';
           }
           emailBody = encodeURIComponent(emailBody);
