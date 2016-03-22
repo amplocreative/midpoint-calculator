@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Negotiation Tools</title>
+  <link rel="stylesheet" type="text/css" href="bootstrap336/css/bootstrap-theme.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap336/css/bootstrap-theme.css.map">
+  <link rel="stylesheet" type="text/css" href="bootstrap336/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap336/css/bootstrap-theme.min.css.map">
+  <link rel="stylesheet" type="text/css" href="bootstrap336/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap336/css/bootstrap.css.map">
+  <link rel="stylesheet" type="text/css" href="bootstrap336/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap336/css/bootstrap.min.css.map">
+</head>
+
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h3>MidPoint</h3>
+    </div>
+    <h4>Midpoint Calculator</h4>
+    <form class="form-inline" style="padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #eee">
+      <div class="form-group success">
+        <label class="sr-only" for="calcDemand">Demand</label>
+        <input type="text" class="form-control" id="calcDemand" placeholder="Demand">
+      </div>
+      <div class="form-group info">
+        <label class="sr-only" for="calcMid">Mid</label>
+        <input type="text" class="form-control" id="calcMid" placeholder="Mid">
+      </div>
+      <div class="form-group success">
+        <label class="sr-only" for="calcOffer">Offer</label>
+        <input type="text" class="form-control" id="calcOffer" placeholder="Offer">
+      </div>
+      <button type="button" class="btn btn-primary btnCalculate">Calculate</button>
+      <button type="button" class="btn btn-success btnCalculateClean">Reset</button>
+      <!-- <button type="button" class="btn btn-info btnSendEmail">“Share These results</button> -->      
+      <h6>This is the midpoint calculator. You can use this to test out hypothetical situations. Fill out at least two of the boxes, click the “calculate” button, and then gather the information in order to solve for any hypothetical demands, offers, or midpoints.</h6>
+    </form>
+    <!-- <div class="row">
+  <div class="col-md-2">
+    <input class="col-md-12 text-center" id="calcDemand">
+  </div>
+  <div class="col-md-2">
+    <input class="col-md-12 text-center" id="calcMid">
+  </div>
+  <div class="col-md-2">
+    <input class="col-md-12 text-center" id="calcOffer">
+  </div>
+  <div class="col-md-1">
+    <button class="col-md-12 btn-small btn-success btnCalculate">Calculate</button>
+  </div>
+  <div class="col-md-1">
+    <button class="col-md-12 btn-small btn-success btnCalculateClean">Clear</button>
+  </div>
+  <div class="col-md-1">
+    <button class="col-md-12 btn-small btn-warning btnSendEmail">Email</button>
+  </div>
+</div>
+ -->
+ <h4>Offer/Demand Tracker</h4>
+ <h6>This tool allows you to track offers and demands, the respective midpoint, and the differential between offers. You can also email your history to yourself. Fill in the demand and the offer and it will calculate the midpoint and differential between multiple offers and keep track of the negotiation data.</h6>
+    <table class="table table-hover table-striped text-center" id="midPointRows" style="margin-bottom:0px;">
+      <thead>
+        <tr class="text-center danger">
+          <th class="col-md-1 text-center">Differential</th>
+          <th class="col-md-4 text-center">Demand</th>
+          <th class="col-md-2 text-center">Mid Point</th>
+          <th class="col-md-4 text-center">Offer</th>
+          <th class="col-md-1 text-center">Differential</th>
+        </tr>
+      </thead>
+      <tbody id="dataTable">
+        <tr id="testRow">
+          <td id="pleft" class="col-md-1 text-center warning">&nbsp;</td>
+          <td class="col-md-4 text-center success">
+            <input class="col-md-12 text-center" id="pointXValues" placeholder="Demand" title="Press enter to add">
+          </td>
+          <td class="col-md-2 text-center info">&nbsp;</td>
+          <td class="col-md-4 text-center success">
+            <input class="col-md-12 text-center" id="pointYValues" placeholder="Offer" title="Press enter to add">
+          </td>
+          <td id="pright" class="col-md-1 text-center warning">&nbsp;</td>
+        </tr>
+      </tbody>
+      <tr>
+        <td colspan="5" class="text-right">
+          <button type="button" class="btn btn-primary btnInCalculate">Calculate</button>
+          <button type="button" class="btn btn-success btnInCalculateClean">Reset</button>
+        </td>
+      </tr>
+      <!-- <tbody id="inputTable">
+        <tr id="testRow">
+          <td id="pleft" class="col-md-1 text-center">&nbsp;</td>
+          <td class="col-md-4 text-center">
+            <input class="col-md-12 text-center" id="pointXValues" title="Press enter to add">
+          </td>
+          <td class="col-md-2 text-center">&nbsp;</td>
+          <td class="col-md-4 text-center">
+            <input class="col-md-12 text-center" id="pointYValues" title="Press enter to add">
+          </td>
+          <td id="pright" class="col-md-1 text-center">&nbsp;</td>
+        </tr>
+      </tbody> -->
+    </table>
+    <div class="col-md-12 text-right" style="height: 70px;" >
+      <button type="button" class="btn btn-info btnSendEmail" style="position: fixed; bottom: 20px; right: 20px; ">Share these results</button>
+    </div>
+  </div>
+  <!-- <button class="btn btn-default"> test</button> -->
+  <script type="text/javascript" src="jquery-2.2.0.min.js"></script>
+  <script type="text/javascript" src="midpoint.js"></script>
+  <script type="text/javascript" src="bootstrap336/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="html2canvas.js"></script>
+</body>
+
+</html>
